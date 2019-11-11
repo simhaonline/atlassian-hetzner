@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  nginx:
+    restart: always
+    image: atlas-nginx
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      EMAIL: <your email>
+      DOMAIN: <your domain>
+  postgres:
+    restart: always
+    image: atlas-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: some_secret_password
+    volumes:
+      - /var/docker/postgres:/var/lib/postgresql
+  wiki:
+    restart: always
+    image: atlassian/confluence-server
+    ports:
+      - 8090:8090
+    environment:
+      ATL_PROXY_NAME: <your domain>
+      ATL_PROXY_PORT: 443
+      ATL_TOMCAT_PORT: 8090
+      ATL_TOMCAT_SCHEME: https
+      ATL_TOMCAT_SECURE: "true"
+      ATL_TOMCAT_CONTEXTPATH: /wiki
+      ATL_DB_TYPE: postgresql
+      ATL_JDBC_URL: jdbc:postgresql://postgres:5432/confdb
+      ATL_JDBC_USER: confuser
+      ATL_JDBC_PASSWORD: some_secret_password
+    volumes:
+      - /var/docker/confluence:/var/atlassian/application-data/confluence
+  jira:
+    restart: always
+    image: atlassian/jira-software
+    ports:
+      - 8080:8080
+    environment:
+      ATL_PROXY_NAME: <your domain>
+      ATL_PROXY_PORT: 443
+      ATL_TOMCAT_PORT: 8080
+      ATL_TOMCAT_SCHEME: https
+      ATL_TOMCAT_SECURE: "true"
+      ATL_TOMCAT_CONTEXTPATH: /jira
+      ATL_DB_TYPE: postgresql
+      ATL_JDBC_URL: jdbc:postgresql://postgres:5432/jriadb
+      ATL_JDBC_USER: jirauser
+      ATL_JDBC_PASSWORD: some_secret_password
+    volumes:
+      - /var/docker/jira:/var/atlassian/application-data/jira
