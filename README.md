@@ -1,5 +1,5 @@
 # Atlassian Hetzner
-Docker scripts to rapid deployment of Atlassian Confluence / JIRA to Hetzner
+Docker scripts for rapid deployment of Atlassian Confluence / JIRA to Hetzner
 
 Despite the title these scripts can be used with any [Docker](https://www.docker.com/) hosting, but I prefer [Hetzner](https://www.hetzner.com/).
 
